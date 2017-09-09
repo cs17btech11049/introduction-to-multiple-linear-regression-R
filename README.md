@@ -17,9 +17,38 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## R Markdown
 
+Introduction
+This assignment is designed to solidify your understanding of some of the
+concepts in statistics that you learned in this class. As such, we will sometimes
+ask you a question that requires an explanation. Please write your explanation as
+regular English text in your markdown file, not as comment in your code. Please
+do not spend time writing long explanations, as 1-3 short sentences will
+generally more than suffice. To do well in this assignment, please be sure to
+review the material from the labs we have done together as you will find
+significant help from these. For the first two questions in particular, I also
+recommend you consult your course notes. There are just 4 questions to this
+assignment that cover, in order: confidence intervals/hypothesis testing, the
+central limit theorem, ANOVA, and multiple linear regression. Finally, you should
+remind yourself of the instructions on how to submit an assignment by looking
+at the instructions from the first assignment. Good luck!
+
 ##Question 1
+In this first question, we will give you a series of scenario for which we want you
+to select the right approach possible and implement it in R. Then you will have to
+report on something like a p-value or to interpret the results. The material will
+cover confidence intervals and hypothesis testing.
 
 - 1.1
+1) The ABC Corporation claims that its new gasoline additive for passenger
+cars will enhance the mileage per tankful of gasoline if a can of their
+product is added to a full tank of gasoline. Five vehicles were tested, and
+the number of miles per tankful was measured. Before using the additive,
+the cars had the following values: 370, 385, 375, 380, 378. After using the
+additive, the corresponding miles per tank that the vehicles registered
+were 387, 397, 380, 392, 389. Run a suitable hypothesis test that checks
+whether there is an increase in efficiency as the corporation claims and
+comment on the results. Use a 95% confidence interval.
+
 
 H0: There is no increase in efficiency (the mean stays the same)
 
@@ -53,6 +82,9 @@ The probability of getting a result at least so many standard deviations away is
 Moreover according to T-test' p-value = 0.001991, we reject Ho. The mean increases when the gas additives are used.
 
 - 1.2
+2) From a random sample of 200 voters it was found that 110 were in favor
+of a particular piece of legislation. Is opinion equally divided on this
+legislative issue? Use α = 0.05. What is the p-value for this test?
 
 H0: Equally divided opinion  
 H1: Not equally divided opinion
@@ -76,7 +108,12 @@ pval
 Pnorm function computes the two-tailed p-value of the test statistic. It doubles the upper tail p-value as the sample proportion is greater than the hypothesized value. Since p-value > 0.05 significance level, we do not reject the null hypothesis that p = 0.5.
 
 - 1.3
-
+3) Fenway Park needs to purchase spotlights that exhibit long life as well as
+uniformity of operating life. Past experience dictates that the variance of
+bulb life is 230 (hours)2. A sample of n = 16 bulbs is obtained from a new
+vendor wishing to get the lighting contract. It was found that the mean
+operating life for this sample was 1020 hours2. Construct a symmetric
+98% confidence interval around this mean.
 
 ```{r}
 s <- 230
@@ -97,6 +134,9 @@ mx+right
 The true mean has a probability of 98% of being in the interval between 986 and 1054 squared hours assuming that the original random variable is normally distributed, and the samples are independent.
 
 - 1.4 
+4) Suppose that you did not know the variance in the previous problem but
+you measured the variance in your sample to be 275 (hours)2.
+Recompute the confidence interval with this new information and setting.
 
 ```{r}
 sx <- 275
@@ -116,6 +156,9 @@ mx+right
 The true mean has a probability of 98% of being in the interval between 860 and 1180 squared hours assuming that the original random variable is normally distributed, and the samples are independent.
 
 - 1.5
+5) In a random sample of 500 tulip bulbs taken from a normal population
+476 of them bloomed. For α=0.05, would you reject the claim that at least
+90% of the bulbs will bloom? What is the p-value for this test?
 
 H0: at least 90% of the bulbs will bloom
 
@@ -136,6 +179,10 @@ pval
 Since the p-value 0.99 > a = 0.05, we fail to reject H0.
 
 - 1.6
+6) Generate 100 samples from a gamma distribution with shape parameter 1
+and scale parameter 1. Now generate 100 samples from an exponential
+distribution with λ = 1. Finally, run a hypothesis test that these two
+samples came from the same distribution and explain the result.
 
 H0: The two samples came from the same distribution
 
@@ -156,6 +203,9 @@ t.test(g,e, var.equal=TRUE, paired=FALSE)
 We obtained p-value greater than 0.05 and therefore we can conclude that the averages of two groups are significantly similar. This confirms that we can accept the null hypothesis H0. In this case the result is expected beacause the Gamma(1, b) is the Exponential distribution.
 
 - 1.7
+7) Suppose that the scores of students on a specialized dexterity test were
+92, 83, 95, 96, 85, 61, 76, 80, 92, 87. Run a hypothesis test that the
+median of the underlying distribution is 82 with 95% confidence.
 
 H0: m=82
 
@@ -173,8 +223,26 @@ t.test(scores, mu=82, conf.level = 0.95)
 Since the p-value 0.44 > a = 0.05, we fail to reject H0.
 
 ##Question 2
+In this question we want to reinforce your understanding of the central limit
+theorem (CLT), which is a very important theorem in statistics. Please refresh
+your notes about what the theorem says. In what follows, our goal is to witness
+how the distribution of sample means approaches the normal distribution when
+the size of the samples is large enough and to see that this holds for different
+distributions (in your notes you saw this just with the exponential distribution).
 
 - 2.1 Poisson
+1) Before generating random samples, use the set.seed() command to allow
+your experiments to be reproducible.
+2) Now create 10000 samples of size 1000 each, drawn from a Poisson
+distribution with parameter λ = 2.7. Please try to do this with a function
+from the apply family, rather than using a for-loop if possible.
+3) Compute a vector with the means of these samples
+4) Plot a density (HINT: look at my ggplot2 examples for this) of this vector
+of means. Is it what you expected?
+5) Compute the mean of your sample means and state what the expected
+value of this is
+6) Finally, run a hypothesis test to check the normality of your vector of
+means
 
 ```{r}
 samples <- 10000
@@ -214,6 +282,8 @@ The ks.test eturns the P-value correspoding to the D statistic.The D statistic i
 The p-value equals to 0.36 > 0.05 and the maximum distance between the CDFs is really small. Therefore we fail to reject the null hypothesis that the sample means are normally distributed. 
 
 - 2.2 Binomial
+Repeat and answer the questions in steps 1 - 6 above with a Binomial
+distribution parameterized by size = 20 and p = 0.3.
 
 ```{r}
 samples <- 10000
@@ -254,8 +324,18 @@ If n is large enough and p not close to 0 or 1, then the distribution
 appears close to symmetric. 
 
 ##Question 3
+In this question we want you to perform a one-way ANOVA in the same vein as
+we did in the lab. The data set for this example is in the accompanying CSV file
+titled anova_data.csv. This contains data on several different countries of the
+world collected by the International Agency for Research on Cancer in 2002. For
+this problem, we are especially interested in how the average employment rate
+varies for countries in different parts of the world. There is a column that lists
+continent, which has Eastern and Western Europe (EE and WE respectively)
+separately so it is not traditional continents but we will use it as is.
 
 - 3.1 
+1) Load the csv file into a data frame in R. For your R markdown file please
+assume that the file is in your working directory (i.e. do not use full paths)
 
 ```{r}
 anova_data <- read.csv("./anova_data.csv")
@@ -267,6 +347,7 @@ anova <- as.data.frame(anova)
 ```
 
 - 3.2 
+2) Plot the mean value of employrate for each different continent
 
 ```{r}
 
@@ -286,6 +367,9 @@ ggplot(cemp, aes(x=factor(continent), y=employrate)) + stat_summary(fun.y="mean"
 ```
 
 - 3.3
+3) Run one way ANOVA on the employrate variable using continent as the
+grouping factor and in your own words carefully explain what the results
+of the ANOVA tell us
 
 ```{r}
 ow_anova <- aov(employrate ~ continent, anovac)
@@ -313,6 +397,8 @@ F value is 3.938, and p-value is very low too. This means tha the variation of e
 
 
 - 3.4 
+4) Now run a Tukey test and compute the number of continent pairs whose
+means are significantly different from each other.
 
 Not all  means are equal. Tukey test is designed to evaluate pair means.
 
@@ -335,6 +421,8 @@ plot (tuk)
 ```
 
 - 3.5 
+5) Finally, test the homeogeneity of the variances and comment on how this
+might affect the analysis
 
 Bartlett's test will be used to determine whether the variance in employrate is the same for all continents. A significance level of 0.05 will be used.
 ```{r}
@@ -351,7 +439,11 @@ fligner.test(employrate ~ continent, data=anovac)
 From the output of both 2 tests we can see that the p-value<< 0.05. This means we can assume the alternative H1 hypothesis that the variance is not the same for all continents. This means that there is evidence to suggest that the variance in employrate is different for each continent.
 
 - 3.6 
- 
+6) Have a think about what sort of conclusions you can draw from these
+data. For example, is it right to conclude that living in Eastern Europe
+causes people to have a lower chance of finding a job when they
+graduate?
+
 ```{r}
 ggplot(anovafact, aes(x = continent, y = incomeperperson)) +
   geom_boxplot(fill = "grey80", colour = "blue") +
@@ -403,8 +495,14 @@ abline(test <- lm(anovafact$urbanrate~anovafact$employrate, data = anovafact))
 This graph makes it clear that there is a negative correlation between urbanrization and employment rate. 
 
 ##Question 4
+In this question we want you to review the basics of multiple linear regression.
+The data set we will use is the Boston housing data set
+(https://archive.ics.uci.edu/ml/datasets/Housing). The accompanying file,
+housing.data contains the data which you can also find by following the previous
+link.
 
 - 4.1
+1) Load the data in housing.data into a data frame
 
 ```{r}
 housing <- read.table("./housing.data", quote="\"", comment.char="")
@@ -412,12 +510,16 @@ housing <- read.table("./housing.data", quote="\"", comment.char="")
 ```
 
 - 4.2
+2) Use the first column from the following table to give suitable names to the
+columns in your data frame (the table has the variables in order)
 
 ```{r}
 colnames(housing) <- c("CRIM", "ZN", "INDUS", "CHAS", "NOX", "RM", "AGE", "DIS",  "RAD", "TAX", "PTRATIO", "B", "LSTAT", "MEDV")
 ```
 
 - 4.3
+3) Train a linear regression model with the final column (MEDV) as the
+dependent variable
 
 ```{r}
 
@@ -487,6 +589,8 @@ abline(h=0)
 ```
 
 - 4.4
+4) How well would you say that your model fits the data? Argue your case by
+using appropriate numbers from the model’s summary.
 
 This model does not fit our data well and we can definitely improve it.
 
@@ -508,10 +612,14 @@ R-squared = 72% evaluates the goodness of fit.R-squared should be improved.
 Our model ONLY fits well houses with low median value MEDV. 
 
 - 4.5 
+5) The model’s summary also gives you the results of various t-tests run on
+the model coefficients. What inferences can you draw from what you see?
 
 F-statistic takes the parameters of our model and compares it to a model that has fewer parameters. In theory the model with more parameters should fit better. High P-value means that our model does not perform better than the model with fewer parameters. Our P-value is really small which means that our model is better than the model with fewer parameters.
 
 - 4.6
+6) Carry out stepwise regression on this model and report which variables
+remain in the model
 
 The remaining variables are the following LSTAT, RM, PTRATIO, DIS, NOX, CHAS, B, ZN, CRIM
 
@@ -533,10 +641,13 @@ summary(mfull)
 
 
 - 4.7 
+7) What is the coefficient of variable CRIM in your model (after stepwise
+regression)?
 
 Coefficient of CRIM= -0.061174
 
 - 4.8
+8) Draw a Q-Q plot for your model’s residuals and comment on the results.
 
 ```{r}
 
