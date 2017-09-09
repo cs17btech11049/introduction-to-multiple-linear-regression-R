@@ -2,8 +2,11 @@
 
 ---
 title: "Assignment 2"
+
 author: "Eva Giannatou"
+
 date: "December 20, 2016"
+
 output: html_document
 ---
 
