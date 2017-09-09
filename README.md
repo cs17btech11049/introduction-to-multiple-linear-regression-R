@@ -8,6 +8,7 @@ author: "Eva Giannatou"
 date: "December 20, 2016"
 
 output: html_document
+
 ---
 
 ```{r setup, include=FALSE}
